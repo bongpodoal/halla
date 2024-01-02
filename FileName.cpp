@@ -1,14 +1,21 @@
 #include <stdio.h>
 int main()
 {
-	int a = 0;
-	int b = 1;
-	int c = 0;
-	for (int i = 2;i <= 10;i++)
+	int test[10][10] = { 0, };
+	for (int i = 0; i < 10;i++)
 	{
-		c = a + b;
-		printf("%d %d %d\n", a, b, c);
-		a = b;
-		b = c;
+		for (int j = 0; j < 10;j++)
+		{
+			if (i == j || 9-i == j)
+				test[i][j] = i+1;
+		}
+	}
+	for (int i = 0; i < 10;i++)
+	{
+		for (int j = 0; j < 10;j++)
+		{
+			printf("%d", test[i][j]);
+		}
+		printf("\n");
 	}
 }
