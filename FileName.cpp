@@ -1,39 +1,22 @@
 #include <stdio.h>
-
+int get_integer(void)
+{
+	int n;
+	printf("정수를 입력하세요: ");
+	scanf_s("%d", &n);
+	return n;
+}
+void is_prime(int n)
+{
+	for (int i = 2;i < n;i++) 
+		if (n % i == 0) {
+			printf("%d는 소수가 아닙니다", n);
+			return;
+		}
+	printf("%d는 소수입니다", n);
+	return;
+}
 int main() {
-    char str[10][10];
-
-
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 10; j++) {
-            str[i][j] = ' ';
-        }
-    }
-
-    for (int i = 0; i < 5; i++) {
-        for (int j = 5 - i - 1; j > 0; j--) {
-            str[i][j] = ' ';
-        }
-        for (int j = 5 - i - 1; j <= 5 + i - 1; j++) {
-            str[i][j] = '*';
-        }
-    }
-
-    for (int i = 0; i < 5 - 1; i++) {
-        for (int j = 0; j <= i; j++) {
-            str[5 + i][j] = ' ';
-        }
-        for (int j = i + 1; j < 2 * 5 - i - 2; j++) {
-            str[5 + i][j] = '*';
-        }
-    }
-
-    for (int i = 0; i < 2 * 5 - 1; i++) {
-        for (int j = 0; j < 2 * 5; j++) {
-            printf("%c", str[i][j]);
-        }
-        printf("\n");
-    }
-
-    return 0;
+	int n = get_integer();
+	is_prime(n);
 }
