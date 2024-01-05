@@ -1,41 +1,30 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 
+int search_binary(int list[], int n, int key) {
+	int low = 0;
+	int high = n - 1;
+	int middle;
+	while (low <= high) {
+		printf("[%d %d]\n", low, high);
+		middle = (low + high) / 2;
+		if (key == list[middle])
+			return middle;
+		else if (key < list[middle])
+			high = middle - 1;
+		else
+			low = middle + 1;
+	}
+	return -1;
+}
 int main(void) {
-	int temp;
-	srand(time(NULL));
-	int arr[10] = { 0, };
-	printf("초기 배열:  ");
-	for (int i = 0; i < 10;i++)
+	int list[9] = { 1, 3, 5, 6, 7, 9, 11, 20, 30 };
+	int n;
+	for (int i = 0; i < 9; i++)
 	{
-		arr[i] = rand() % 100;
-		printf("%d ", arr[i]);
+		printf("%d ", list[i]);
 	}
-	printf("\n");
-	for (int i = 0;i < 9;i++)
-	{
-		printf("\n%d번째수의 비교: \n\n",i);
-		for (int j = i+1 ;j <= 9;j++)
-		{
-			if (arr[i] > arr[j])
-			{
-				temp = arr[i];
-				arr[i] = arr[j];
-				arr[j] = temp;
-				printf("%d와 %d위치 변경 ->",arr[i], arr[j]);
-				for (int i = 0; i < 10;i++)
-				{
-					printf("%d ", arr[i]);
-				}
-				printf("\n");
-			}
-
-		}
-	}
-	printf("정렬된 배열:  ");
-	for (int i = 0; i < 10;i++)
-	{
-		printf("%d ", arr[i]);
-	}
+	printf("\n\n위 배열에서 찾으실 정수를 입력하세요: ");
+	scanf_s("%d", &n);
+	int num = search_binary(list, 9, n);
+	printf("인덱스 %d번째에 있습니다.", num);
 }
