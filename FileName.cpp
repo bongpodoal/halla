@@ -3,32 +3,39 @@
 #include <time.h>
 
 int main(void) {
-    srand(time(NULL));
-    int num[10];
-    int random, j;
+	int temp;
+	srand(time(NULL));
+	int arr[10] = { 0, };
+	printf("초기 배열:  ");
+	for (int i = 0; i < 10;i++)
+	{
+		arr[i] = rand() % 100;
+		printf("%d ", arr[i]);
+	}
+	printf("\n");
+	for (int i = 0;i < 9;i++)
+	{
+		printf("\n%d번째수의 비교: \n\n",i);
+		for (int j = i+1 ;j <= 9;j++)
+		{
+			if (arr[i] > arr[j])
+			{
+				temp = arr[i];
+				arr[i] = arr[j];
+				arr[j] = temp;
+				printf("%d와 %d위치 변경 ->",arr[i], arr[j]);
+				for (int i = 0; i < 10;i++)
+				{
+					printf("%d ", arr[i]);
+				}
+				printf("\n");
+			}
 
-    num[0] = rand() % 100 + 1;
-    for (int i = 1; i < 10; i++) {
-        random = rand() % 100 + 1; // 랜덤값 생성
-
-
-        int index = 0;
-        for (int k = 0; k < i; k++) {        // 만약 난수가 값보다 크면, 그만큼 인덱스를 증가
-            if (num[k] <= random) {
-                index = k + 1;
-            }
-        }
-
-        // 찾은 위치로부터 뒤에 있는 모든 요소들을 한 칸씩 뒤로 이동
-        for (int j = i; j > index; j--) {
-            num[j] = num[j - 1];
-        }
-
-        // 난수를 삽입
-        num[index] = random;
-    }
-    for (int i = 0; i < 10; i++) {
-        printf("%d ", num[i]); // 값 출력
-    }
-    return 0;
+		}
+	}
+	printf("정렬된 배열:  ");
+	for (int i = 0; i < 10;i++)
+	{
+		printf("%d ", arr[i]);
+	}
 }
