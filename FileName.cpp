@@ -1,46 +1,25 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 
-void random_arr(int arr[], int n)
-{
-    for (int i = 0; i < n; i++)
-        arr[i] = rand() % 100 + 1;
+int search_binaryRecur(int list[], int low, int high, int key) {
+	if (low > high) return -1;
+	int middle = (low + high) / 2;
+	if (list[middle] == key) return middle;
+	if (list[middle] > key) {
+		return search_binaryRecur(list, low, middle - 1, key);
+	}
+	return -1;
 }
-void quick_sort(int arr[], int left, int right) {
-    int p_left = left;
-    int p_right = right;
-    int pivot = arr[(left + right) / 2];
-    int temp;
-
-    while (p_left <= p_right) {
-        while (arr[p_left] < pivot) p_left++;
-        while (arr[p_right] > pivot) p_right--;
-        if (p_left <= p_right) {
-            temp = arr[p_left];
-            arr[p_left] = arr[p_right];
-            arr[p_right] = temp;
-            p_left++;
-            p_right--;
-        }
-    }
-
-    if (left < p_right)
-        quick_sort(arr, left, p_right);
-    if (p_left < right)
-        quick_sort(arr, p_left, right);
-}
-
-int main() {
-    srand(time(NULL));
-    int arr[20] = { 0, };
-    int n = sizeof(arr) / sizeof(arr[0]);
-
-    random_arr(arr, n);
-    quick_sort(arr, 0, n - 1);
-
-    for (int i = 0; i < n; i++)
-        printf("%d ", arr[i]);
-
-    return 0;
+int main(void) {
+	int list[18] = { 4, 9, 11, 24, 29, 30, 37, 38, 39, 49 ,50, 54, 57, 63, 71, 76, 81, 87 };
+	int n;
+	int low = 0;
+	int high = sizeof(list) / sizeof(list[0]) - 1;
+	for (int i = 0; i < 18; i++)
+	{
+		printf("%d ", list[i]);
+	}
+	printf("\n\n위 배열에서 찾으실 정수를 입력하세요: ");
+	scanf_s("%d", &n);
+	int num = search_binaryRecur(list, low, high, n);
+	printf("인덱스 %d에 있습니다.", num);
 }
