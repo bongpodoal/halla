@@ -1,82 +1,46 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-void random_score(double scores[][7])
-{
-	for (int i = 0; i < 20; i++)
-	{
-		for (int j = 0; j < 4;j++)
-		{
-			scores[i][j] = rand() % 100 + 1;
-		}
-	}
-	printf("\n");
-}
-int search_binary(double list[], int n, double key) { // 등수 처리 함수
-	int low = 0;
-	int high = n - 1;
-	int middle;
-	int rank[20];
-	while (low <= high) {
-		middle = (low + high) / 2;
-		if (key == list[middle])
-			return middle;
-		else if (key < list[middle])
-			high = middle - 1;
-		else
-			low = middle + 1;
-	}
-}
-void sorting_score(double scores[][7], double sort_scores[])
-{
-	int temp;
-	for (int i = 0;i < 20;i++) // 총점계산
-	{
-		scores[i][5] = scores[i][0] * 0.3 + scores[i][1] * 0.4 + scores[i][2] * 0.2 + scores[i][3] * 0.1;
-	}
-	for (int i = 0; i < 20;i++) // 등수 계산을 위한 배열 복사
-	{
-		sort_scores[i] = scores[i][5];
-	}
-	for (int i = 0;i < 19;i++) // 총점 정렬
-	{
-		for (int j = i + 1;j <= 19;j++)
-		{
-			if (sort_scores[i] > sort_scores[j])
-			{
-				temp = sort_scores[i];
-				sort_scores[i] = sort_scores[j];
-				sort_scores[j] = temp;
-			}
-		}
-	}
-}
-void finding_rank(double scores[][7], double sort_scores[], int rank[])
-{
-	double key;
-	for (int i = 0; i < 20;i++) // 등수 값 탐색
-	{
-		key = scores[i][5];
-		rank[i] = search_binary(sort_scores, 20, key);
-	}
-}
-int main()
-{
-	srand(time(NULL));
-	double scores[20][7];
-	double sort_scores[20];
-	int temp;
-	int low = 0;
-	int high = 19;
-	int rank[20];
 
-	random_score(scores);
-	sorting_score(scores, sort_scores);
-	finding_rank(scores, sort_scores, rank);
+void random_arr(int arr[], int n)
+{
+    for (int i = 0; i < n; i++)
+        arr[i] = rand() % 100 + 1;
+}
+void quick_sort(int arr[], int left, int right) {
+    int p_left = left;
+    int p_right = right;
+    int pivot = arr[(left + right) / 2];
+    int temp;
 
-	for (int i = 0;i < 20;i++) // 평균 계산, 결과값 출력
-	{
-		scores[i][4] = (scores[i][0] + scores[i][1] + scores[i][2] + scores[i][3]) / 4;
-		printf("%4d번 학생: 중간: %4.0lf, 기말: %4.0lf, 과제: %4.0lf, 출석: %4.0lf, 총점: %4.1lf, %d등 \n", i + 1, scores[i][0], scores[i][1], scores[i][2], scores[i][3], scores[i][5], 20 - rank[i]);
-	}
+    while (p_left <= p_right) {
+        while (arr[p_left] < pivot) p_left++;
+        while (arr[p_right] > pivot) p_right--;
+        if (p_left <= p_right) {
+            temp = arr[p_left];
+            arr[p_left] = arr[p_right];
+            arr[p_right] = temp;
+            p_left++;
+            p_right--;
+        }
+    }
+
+    if (left < p_right)
+        quick_sort(arr, left, p_right);
+    if (p_left < right)
+        quick_sort(arr, p_left, right);
+}
+
+int main() {
+    srand(time(NULL));
+    int arr[20] = { 0, };
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    random_arr(arr, n);
+    quick_sort(arr, 0, n - 1);
+
+    for (int i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+
+    return 0;
 }
