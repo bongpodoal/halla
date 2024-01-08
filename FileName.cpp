@@ -4,10 +4,10 @@ int search_binaryRecur(int list[], int low, int high, int key) {
 	if (low > high) return -1;
 	int middle = (low + high) / 2;
 	if (list[middle] == key) return middle;
-	if (list[middle] > key) {
+	if (list[middle] > key)
 		return search_binaryRecur(list, low, middle - 1, key);
-	}
-	return -1;
+	else
+		return search_binaryRecur(list, middle + 1, high, key); 
 }
 int main(void) {
 	int list[18] = { 4, 9, 11, 24, 29, 30, 37, 38, 39, 49 ,50, 54, 57, 63, 71, 76, 81, 87 };
@@ -18,6 +18,7 @@ int main(void) {
 	{
 		printf("%d ", list[i]);
 	}
+
 	printf("\n\n위 배열에서 찾으실 정수를 입력하세요: ");
 	scanf_s("%d", &n);
 	int num = search_binaryRecur(list, low, high, n);
