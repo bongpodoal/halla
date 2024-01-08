@@ -1,46 +1,45 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 
-void random_arr(int arr[], int n)
+int partition(int* arr, int left, int right)
 {
-    for (int i = 0; i < n; i++)
-        arr[i] = rand() % 100 + 1;
-}
-void quick_sort(int arr[], int left, int right) {
-    int p_left = left;
-    int p_right = right;
-    int pivot = arr[(left + right) / 2];
+    int pivot = arr[left]; // 피벗을 배열의 첫 번째 요소로 설정
+    int i = left + 1;
+    int j = right;
     int temp;
 
-    while (p_left <= p_right) {
-        while (arr[p_left] < pivot) p_left++;
-        while (arr[p_right] > pivot) p_right--;
-        if (p_left <= p_right) {
-            temp = arr[p_left];
-            arr[p_left] = arr[p_right];
-            arr[p_right] = temp;
-            p_left++;
-            p_right--;
+    while (i <= j) {
+        while (i <= right && arr[i] <= pivot) i++; // 피벗보다 큰 값을 찾았다면 
+        while (j > left && arr[j] >= pivot) j--; // 피벗보다 작은 값을 찾았다면
+        if (i < j) {              // 찾은 값들을 교환
+            temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
         }
     }
+    arr[left] = arr[j]; // 왼쪽과 오른쪽 순서 변경
+    arr[j] = pivot;
 
-    if (left < p_right)
-        quick_sort(arr, left, p_right);
-    if (p_left < right)
-        quick_sort(arr, p_left, right);
+    return i;
+
+}
+void quick_sort(int arr[], int left, int right) {
+    if (left >= right) return; // 분할할 구간이 없는 경우 종료
+
+    int p = partition(arr, left, right);    // 분할한 배열을 정렬
+
+    quick_sort(arr, left, right - 1);   // 분할한 배열을 재귀
+    quick_sort(arr, left + 1, right);
 }
 
 int main() {
-    srand(time(NULL));
-    int arr[20] = { 0, };
-    int n = sizeof(arr) / sizeof(arr[0]);
+    int arr[] = { 10, 30, 22, 50, 20, 90, 83, 2, 6, 66 };
 
-    random_arr(arr, n);
-    quick_sort(arr, 0, n - 1);
+    quick_sort(arr, 0, 9);
 
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < 10; i++) {
         printf("%d ", arr[i]);
+    }
+    printf("\n");
 
     return 0;
 }
