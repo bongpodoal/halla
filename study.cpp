@@ -1,41 +1,68 @@
 #include <stdio.h>
-#define MAX_SIZE 10
+
+#define MAX_SIZE 100
 
 int queue[MAX_SIZE];
 int front = 0;
-int rear = -1;
+int rear = 0;
 
 int is_full() {
-    return rear >= MAX_SIZE - 1;
+    return (rear + 1) % MAX_SIZE == front;
 }
 
 int is_empty() {
-    return front > rear;
+    return front == rear;
 }
 
 void enqueue(int value) {
     if (is_full()) {
-        printf("큐가 가득 차서 값을 넣지 못했습니다.\n");
+        printf("큐가 가득 찼습니다.\n");
         return;
     }
-    queue[++rear] = value;
+    queue[rear] = value;
+    rear = (rear + 1) % MAX_SIZE;
 }
 
 int dequeue() {
     if (is_empty()) {
-        printf("큐가 비어있어서 값을 빼지 못했습니다.\n");
+        printf("큐가 비어있습니다.\n");
         return -1;
     }
-    return queue[front++];
+    int value = queue[front];
+    front = (front + 1) % MAX_SIZE;
+    return value;
 }
-
+int menu(void)
+{
+    int n;
+    printf("\n====================\n");
+    printf("1. 큐에 값을 입력\n");
+    printf("2. 큐를 출력하고 초기화\n");
+    printf("3. 종료\n");
+    printf("====================\n");
+    scanf_s("%d", &n);
+    return n;
+}
 int main() {
-    enqueue(10);
-    enqueue(20);
-    enqueue(30);
-
-    printf("뺀 값 %d\n", dequeue());
-    printf("뺀 값 %d", dequeue());
+    int n;
+    while (1)
+    {
+        switch (menu())
+        {
+        case 1:
+            printf("값을 입력하세요: ");
+            scanf_s("%d", &n);
+            enqueue(n);
+            break;
+        case 2:
+            while (!is_empty())
+                printf("%d ", dequeue());
+            break;
+        case 3:
+            printf("종료합니다.");
+            return 0;
+        }
+    }
 
     return 0;
 }
