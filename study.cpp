@@ -9,29 +9,43 @@ void rand_num(int* array)
 		array[i] = rand() % 100 + 1;
 	}
 }
-void ArrayInsert(int* array, int num, int idx)
+int* ArrayInsert(int* array, int num, int idx)
 {
-	for (int i = length; i > idx; i--)
+	int* tempArray = (int*)malloc(sizeof(int) * (length + 1));
+
+	for (int i = 0; i < length; i++)
 	{
-		array[i] = array[i - 1];
+		if (i < idx)
+			tempArray[i] = array[i];
+		else
+			tempArray[i + 1] = array[i];
 	}
-	array[idx] = num;
+	tempArray[idx] = num;
+	free(array);
 	printf("성공적으로 추가되었습니다. \n");
 	length++;
+	return tempArray;
 }
-void ArrayDelete(int* array, int idx)
+int* ArrayDelete(int* array, int idx)
 {
+	int* tempArray = (int*)malloc(sizeof(int) * (length - 1));
 	if (length <= 0)
 	{
 		printf("더이상 값을 뺄 수 없습니다.");
-		return;
+		free(array);
+		return tempArray;
 	}
-	for (int i = idx; i < length - 1; i++)
+	for (int i = 0; i < length - 1; i++)
 	{
-		array[i] = array[i + 1];
+		if (i < idx)
+			tempArray[i] = array[i];
+		else
+			tempArray[i] = array[i + 1];
 	}
+	free(array);
 	printf("성공적으로 삭제되었습니다. \n");
 	length--;
+	return tempArray;
 
 }
 void print_array(int* array)
@@ -45,13 +59,20 @@ void print_array(int* array)
 int main()
 {
 	int task = 0;
-	int array[50] = { 0, };
+	int tempArray[50] = { 0, };
+	int* array = (int*)malloc(sizeof(int) * length);
 	int idx = 0;
 	int num = 0;
-	rand_num(array);
+	rand_num(tempArray);
 
 	printf("현재 생성된 배열값 : \n");
-	print_array(array);
+	print_array(tempArray);
+
+	for (int i = 0; i < length; i++)
+	{
+		array[i] = tempArray[i];
+	}
+
 	while (1)
 	{
 		printf("원하는 작업을 입력하세요 : \n");
@@ -66,14 +87,14 @@ int main()
 		{
 			printf("원하시는 인덱스를 입력하세요 : \n");
 			scanf_s("%d", &idx);
-			ArrayDelete(array, idx);
+			array = ArrayDelete(array, idx);
 			print_array(array);
 		}
 		else if (task == 2)
 		{
 			printf("원하시는 값과 인덱스를 입력하세요 (ex 35 2): \n");
 			scanf_s("%d %d", &num, &idx);
-			ArrayInsert(array, num, idx);
+			array = ArrayInsert(array, num, idx);
 			print_array(array);
 		}
 		else
