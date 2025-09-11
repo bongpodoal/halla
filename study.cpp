@@ -1,18 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define MAX_SIZE 20
-int* InsertInArray(int* array, int length, int num, int idx)
+int* DeleteFromArray(int* array, int length, int idx)
 {
 	int count;
 	int* tempArray = (int*)malloc(sizeof(int) * (length + 1));
-	for (count = 0; count < length; count++)
+	for (count = 0; count < length - 1; count++)
 	{
 		if (count < idx)
 			tempArray[count] = array[count];
 		else
-			tempArray[count + 1] = array[count];
+			tempArray[count] = array[count + 1];
 	}
-	tempArray[idx] = num;
 	free(array);
 
 	return tempArray;
@@ -27,8 +26,8 @@ int main(void)
 	for (count = 0; count < length; count++)
 		scores[count] = tempArray[count];
 
-	scores = InsertInArray(scores, length, 75, 2);
-	length += 1;
+	scores = DeleteFromArray(scores, length, 2);
+	length -= 1;
 
 	for (count = 0; count < length; count++)
 		printf("%d, ", scores[count]);
