@@ -1,23 +1,28 @@
-#include <stdio.h>
-void ReversArray(int* array, int length)
-{
-	int middle = length / 2;
-	int temp;
-	for (int i = 0; i < middle; i++)
-	{
-		temp = array[i];
-		array[i] = array[length - 1 - i];
-		array[length - 1 - i] = temp;
-	}
-}
 
+#include <stdio.h>
 int main()
 {
-	int scores[] = { 50,60,70,80,90 };
-	int length = 5;
-	ReversArray(scores, length);
-	for (int i = 0; i < length; i++)
-		printf("%d ", scores[i]);
+	int length = 6;
+	int map[5][5] = { 0, };
+	for (int i = 0; i < length - 1; i++)
+	{
+		for (int j = 0; j < length - 1; j++)
+		{
+			int far = i - j;
+			if (far < 0)
+				far *= -1;
+			map[i][j] = far + 1;
 
-	return 0;
+		}
+	}
+	
+
+	for (int i = 0; i < length - 1; i++)
+	{
+		for (int j = 0; j < length - 1; j++)
+		{
+			printf("%d", map[i][j]);
+		}
+		printf("\n");
+	}
 }
