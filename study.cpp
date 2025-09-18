@@ -4,22 +4,33 @@
 
 void rand_arr(int arr[], int N) {
     for (int i = 0; i < N; i++) {
-        arr[i] = i;
-    }
+        int num;
+        int flag;
 
-    for (int i = N - 1; i > 0; i--) {
-        int j = rand() % N;
-        int tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
+        while (1) {
+            num = rand() % N;  
+            flag = 0;
+
+            for (int j = 0; j < i; j++) {
+                if (arr[j] == num) {
+                    flag = 1;
+                    break;
+                }
+            }
+
+            if (!flag) {  
+                arr[i] = num;
+                break;
+            }
+        }
     }
 }
 
 int main() {
+    int N = 9;
     int arr[9];
-    int N = sizeof(arr) / sizeof(int);
 
-    srand(time(NULL)); 
+    srand(time(NULL));  
     rand_arr(arr, N);
 
     for (int i = 0; i < N; i++) {
