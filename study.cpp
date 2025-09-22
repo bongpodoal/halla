@@ -1,40 +1,29 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-
-void rand_arr(int arr[], int N) {
-    for (int i = 0; i < N; i++) {
-        int num;
-        int flag;
-
-        while (1) {
-            num = rand() % N;  
-            flag = 0;
-
-            for (int j = 0; j < i; j++) {
-                if (arr[j] == num) {
-                    flag = 1;
-                    break;
-                }
-            }
-
-            if (!flag) {  
-                arr[i] = num;
-                break;
-            }
-        }
-    }
+void bubble(int* arrays, int length)
+{
+	for (int i = 0; i < length - 1; i++)
+	{
+		for (int j = 0; j < length - i - 1; j++)
+		{
+			if (arrays[j] > arrays[j + 1])
+			{
+				int temp = arrays[j];
+				arrays[j] = arrays[j + 1];
+				arrays[j + 1] = temp;
+			}
+		}
+	}
 }
+int main()
+{
+	int scores[] = { 60,50,95,80,70 };
+	int length = sizeof(scores) / sizeof(int);
 
-int main() {
-    int N = 9;
-    int arr[9];
+	bubble(scores, length);
 
-    srand(time(NULL));  
-    rand_arr(arr, N);
-
-    for (int i = 0; i < N; i++) {
-        printf("%d ", arr[i]);
-    }
-    return 0;
+	for (int i = 0; i < length; i++)
+	{
+		printf("%d ", scores[i]);
+	}
+	return 0;
 }
