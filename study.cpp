@@ -1,122 +1,68 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
-#define STACKLEN 10
-#define NAMELEN 20
-
-typedef struct Stack
-{
-	char* data[STACKLEN];
-	int idx;
-}Stack;
-
-Stack* CreateStack()
-{
-	Stack* newStack = (Stack*)malloc(sizeof(Stack));
-	newStack->idx = 0;
-	for (int cnt = 0; cnt < STACKLEN; cnt++)
-		newStack->data[cnt] = NULL;
-
-	return newStack;
-
-}
-
-void Push(Stack* stack, char* name)
-{
-	if (stack->idx == 10)
-	{
-		printf("stack is full\n");
-		return;
+typedef struct TreeNode {
+	int data;
+	struct TreeNode* left;
+	struct TreeNode* right;
+}TreeNode;
+TreeNode* createNode(int data) {
+	TreeNode* newNode = (TreeNode*)malloc(sizeof(TreeNode));
+	if (!newNode) {
+		printf("메모리 할당 오류\n");
+		exit(1);
 	}
-	char* newName = (char*)malloc(sizeof(char) * (strlen(name) + 1));
-	strcpy(newName, name);
-	stack->data[stack->idx] = newName;
-	stack->idx++;
+	newNode->data = data;
+	newNode->left = NULL;
+	newNode->right = NULL;
+	return newNode;
 }
-void Pop(Stack* stack)
+TreeNode* insertNode(TreeNode* node, int data)
 {
-	if (stack->idx == 0)
-	{
-		printf("stack is empty");
-		return;
+	if (node == NULL) {
+		return createNode(data);
 	}
-	stack->idx--;
-	printf("%s\n", stack->data[stack->idx]);
-	free(stack->data[stack->idx]);	
-}
-void PrintStack(Stack* stack)
-{
-	for (int cnt = stack->idx - 1; cnt >= 0; cnt--)
-		printf("%s -> ", stack->data[cnt]);
-	printf("End\n\n");
-}
-void FreeStack(Stack* stack)
-{
-	while (1)
-	{
-		if (stack->idx == 0)
-			break;
-		Pop(stack);					
-	}
-	free(stack);
-}
-void PrintMenu(Stack* stack)
-{
-	char tmpStr[NAMELEN];
-	char order[6];
 
-	printf("Please enter Order(1, push 'string', 2.pop, 3. size, 4. print, 5. help, 6.quit)\n");
-	printf("If you want to see order again than use help order\n");
-	while (1)
-	{
-		scanf("%s", order);
-		if (strcmp(order, "push") == 0)
-		{
-			scanf("%s", tmpStr);
-			Push(stack, tmpStr);
-			printf("\n");
-		}
-		else if (strcmp(order, "pop") == 0)
-		{
-			Pop(stack);
-			printf("\n");
-		}
-		else if (strcmp(order, "size") == 0)
-		{
-			printf("%d\n\n", stack->idx);
-		}
-		else if (strcmp(order, "print") == 0)
-		{
-			PrintStack(stack);
-		}
-		else if (strcmp(order, "help") == 0)
-		{
-			printf("Please enter Order(1, push 'string', 2.pop, 3. size, 4. print, 5. help, 6.quit)\n");
-		}
-		else if (strcmp(order, "quit") == 0)
-		{
-			printf("\n");
-			break;
-		}
-		else
-		{
-			printf("'%s' isn't decleared order \n\n", order);
-		}
-		printf("Please Enter Order\n");	
+	if (data < node->data) {
+		node->left = insertNode(node->left, data);
+	}
+
+	else if (data > node->data) {
+		node->right = insertNode(node->right, data);
+	}
+	return node;
+}
+
+void inorderTraversal(TreeNode* root) {
+	if (root != NULL) {
+		inorderTraversal(root->left);
+		printf("%d ", root->data);
+		inorderTraversal(root->right);
+	}
+}
+
+void freeTree(TreeNode* root) {
+	if (root != NULL) {
+		freeTree(root->left);
+		freeTree(root->right);
+		free(root);
 	}
 }
 int main()
 {
-	Stack* stack = CreateStack();
+	TreeNode* root = NULL;
+	int inputData;
+	
+	printf("정수 10개를 입력하세요 : \n");
+	
+	for (int i = 0; i < 10; i++) {
+		printf("%d번째 숫자: ", i + 1);
+		scanf_s("%d", &inputData);
+		root = insertNode(root, inputData);
+	}
 
-	PrintMenu(stack);
+	printf("생성된 트리 중위 순회 결과 : \n");
+	inorderTraversal(root);
+	printf("\n");
 
-	FreeStack(stack);
 
-	printf("Program is exited successfully\n");
-
-	return 0;
 }
