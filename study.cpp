@@ -35,8 +35,8 @@ TreeNode* insertNode(TreeNode* node, int data)
 void inorderTraversal(TreeNode* root) {
 	if (root != NULL) {
 		inorderTraversal(root->left);
-		printf("%d ", root->data);
 		inorderTraversal(root->right);
+		printf("%d ", root->data);
 	}
 }
 
@@ -60,7 +60,7 @@ int main()
 		root = insertNode(root, inputData);
 	}
 
-	printf("생성된 트리 중위 순회 결과 : \n");
+	printf("생성된 트리 후위 순회 결과 : \n");
 	inorderTraversal(root);
 	printf("\n");
 
